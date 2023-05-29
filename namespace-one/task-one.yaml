@@ -1,0 +1,11 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: hello-world
+  namespace: namespace-one
+spec:
+  steps:
+  - name: hello-world
+    image: registry.access.redhat.com/ubi8/ubi:latest
+    script: |
+      echo "Hello world"

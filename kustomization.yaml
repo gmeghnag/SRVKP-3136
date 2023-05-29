@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- namespace-one.yaml
+- namespace-two.yaml
+- namespace-three.yaml
+- task-one.yaml
+- task-two.yaml
+- task-three.yaml
+- pipeline-one.yaml
+- pipeline-two.yaml
+- pipeline-three.yaml
