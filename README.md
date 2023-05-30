@@ -4,6 +4,11 @@
 After removing a namespace resource with pruner [annotations](https://docs.openshift.com/container-platform/4.11/cicd/pipelines/automatic-pruning-taskrun-pipelinerun.html#annotations-for-automatic-pruning-taskruns-pipelineruns_automatic-pruning-taskrun-pipelinerun), the operator breaks down and for any new namespace with pruner annotations, the related CronJob is not created.
 
 ## How-To-Reproduce
+- Install OpenShift Pipelines Operator if not present:
+  ```
+  oc apply -k https://github.com/gmeghnag/openshift-pipelines
+  ```
+  
 - Create the `namespace-one` [Namespace](https://raw.githubusercontent.com/gmeghnag/SRVKP-3136/main/namespace-one/namespace-one.yaml), with the required [annotations](https://docs.openshift.com/container-platform/4.11/cicd/pipelines/automatic-pruning-taskrun-pipelinerun.html#annotations-for-automatic-pruning-taskruns-pipelineruns_automatic-pruning-taskrun-pipelinerun) for tekton resources automatic pruning, along with a simple `Task` and  `Pipeline`, by executing:
 
   ```
@@ -26,7 +31,7 @@ After removing a namespace resource with pruner [annotations](https://docs.opens
   oc get cj -n openshift-pipelines -o json | jq '.items[0] | select(.metadata.labels."tektonconfig.operator.tekton.dev/pruner.ns"=="namespace-two").metadata.name'
   ```
   
-## Error logs :red_circle:
+## Error logs 
 Check for the reconciler error inside the `openshift-pipelines-operator lifecycle` container:
   ```
   $ oc logs -n openshift-operators $(oc get po -n openshift-operators -l app=openshift-pipelines-operator -o jsonpath='{.items[0].metadata.name}') -c openshift-pipelines-operator lifecycle | jq -R 'fromjson? | select(.level=="error") | select(.msg |contains("not found"))'
