@@ -18,7 +18,7 @@ After removing a namespace resource with pruner [annotations](https://docs.opens
   ```
   Verify that the pruner `CronJob` has been created for the namespace `namespace-one`:
   ```
-  oc get cj -n openshift-pipelines -o json | jq '.items[0] | select(.metadata.labels."tektonconfig.operator.tekton.dev/pruner.ns"=="namespace-one").metadata.name'
+  oc get cj -n openshift-pipelines -o json | jq '.items[] | select(.metadata.labels."tektonconfig.operator.tekton.dev/pruner.ns"=="namespace-one").metadata.name'
   ```
 - Then, delete the namespace `namespace-one`, then you will see that the associated `CronJob` resource in the namespace `openshift-pipelines` will not be deleted:
   ```
@@ -28,7 +28,7 @@ After removing a namespace resource with pruner [annotations](https://docs.opens
 - Now create another namespace `namespace-two` identical to `namespace-one`, you will see that the `CronJob` for that namespace will not be created and even if you start some pipelines, these will not be pruned:
   ```
   oc create -f namespace-two
-  oc get cj -n openshift-pipelines -o json | jq '.items[0] | select(.metadata.labels."tektonconfig.operator.tekton.dev/pruner.ns"=="namespace-two").metadata.name'
+  oc get cj -n openshift-pipelines -o json | jq '.items[] | select(.metadata.labels."tektonconfig.operator.tekton.dev/pruner.ns"=="namespace-two").metadata.name'
   ```
   
 ## Error logs 
